@@ -14,8 +14,8 @@ class Menu:
 
         self.buttons = []
         self.buttons.append(Button((322, 230), (215, 67), pygame.image.load("Play_Default.png"), pygame.image.load("Play_Highlight.png"), lambda: self.play()))
-        self.buttons.append(Button((322, 290), (215, 67), pygame.image.load("Quit_Default.png"), pygame.image.load("Quit_Highlight.png"), lambda: self.quit()))
-        self.buttons.append(Button((322, 350), (215, 67), pygame.image.load("Credits_Default.png"), pygame.image.load("Credits_Highlight.png"), lambda: self.credits()))
+        self.buttons.append(Button((322, 290), (215, 67), pygame.image.load("Quit_Default.png"), pygame.image.load("Quit_Highlight.png"), lambda: self.exit()))
+        self.buttons.append(Button((322, 350), (215, 67), pygame.image.load("Credits_Default.png"), pygame.image.load("Credits_Highlight.png"), lambda: self.display_credits()))
     
     def render(self, screen):
         screen.fill((40, 20, 0))
@@ -37,9 +37,10 @@ class Menu:
     def play(self):
         self.start = True
 
-    def quit(self):
+    def exit(self):
         self.quit = True
 
-    def credits(self):
+    def display_credits(self):
         self.credits = True
+
 

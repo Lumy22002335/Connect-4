@@ -1,14 +1,17 @@
 import pygame
 import sys
 from menu import Menu
+from game import Game
 
-pygame.init()
-
-screen = pygame.display.set_mode((860, 480))
-
-scene = Menu()
 
 def main():
+
+    pygame.init()
+
+    screen = pygame.display.set_mode((860, 480))
+
+    scene = Menu()
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -17,6 +20,18 @@ def main():
                 scene.event_handler(event)
 
         scene.render(screen)
+
+        if isinstance(scene, Menu):
+            if scene.start:
+                scene = Game()
+            elif scene.credits:
+                scene = Credits()
+
+        if scene.quit:
+            if isinstance(scene, Menu):
+                exit()
+            else:
+                scene = Menu()
 
         pygame.display.flip()
 
