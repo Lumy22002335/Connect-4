@@ -24,8 +24,6 @@ def main():
         if isinstance(scene, Menu):
             if scene.start:
                 scene = Game()
-            elif scene.credits:
-                scene = Credits()
 
         if scene.quit:
             if isinstance(scene, Menu):
