@@ -21,6 +21,9 @@ def main():
 
         scene.render(screen)
 
+        if isinstance(scene, Game):
+            scene.update()
+
         if isinstance(scene, Menu):
             if scene.start:
                 scene = Game()
