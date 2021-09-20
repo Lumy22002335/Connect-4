@@ -115,6 +115,9 @@ class Game:
 			if self.back_button.rect.collidepoint(event.pos):
 				self.back_button.on_click()
 
+			if self.win_condition != 0:
+				return
+
 			if self.mouse_grid_pos[0] < 0 or self.mouse_grid_pos[0] > 6 or self.mouse_grid_pos[1] < 0 or self.mouse_grid_pos[1] > 5:
 				return
 
