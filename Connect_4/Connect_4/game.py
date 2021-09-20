@@ -8,9 +8,17 @@ class Game:
 		self.red_chip = pygame.image.load("Red_Chip.png")
 		self.yellow_chip = pygame.image.load("Yellow_Chip.png")
 
+		self.red_win = pygame.image.load("Red_Win.png")
+		self.yellow_win = pygame.image.load("Yellow_Win.png")
+		self.tie = pygame.image.load("Tie.png")
+		self.yellow_big = pygame.image.load("Yellow_Chip_Big.png")
+		self.red_big = pygame.image.load("Red_Chip_Big.png")
+
 		self.back_button = Button((-25, 405), (215, 67), pygame.image.load("Back_Default.png"), pygame.image.load("Back_Highlight.png"), lambda: self.back())
 
 		self.turn = 1
+
+		self.win_condition = 0
 
 		self.mouse_grid_pos = (0, 0)
 
@@ -28,9 +36,55 @@ class Game:
 			if self.grid[y][x] == 0:
 				return y
 
+	def check_win_condition(self):
+
+		# Check horizontal
+		for y in range(0, 6):
+			for x in range(0, 4):
+				if self.grid[y][x] == self.turn and self.grid[y][x + 1] == self.turn and self.grid[y][x + 2] == self.turn and self.grid[y][x + 3] == self.turn:
+					self.win_condition = self.turn
+
+		# Check vertical 
+		for x in range(0, 7):
+			for y in range(0, 3):
+				if self.grid[y][x] == self.turn and self.grid[y + 1][x] == self.turn and self.grid[y + 2][x] == self.turn and self.grid[y + 3][x] == self.turn:
+					self.win_condition = self.turn
+
+		# Check diagonals
+		for y in range(0, 3):
+			for x in range(0, 4):
+				if self.grid[y][x] == self.turn and self.grid[y + 1][x + 1] == self.turn and self.grid[y + 2][x + 2] == self.turn and self.grid[y + 3][x + 3] == self.turn:
+					self.win_condition = self.turn
+
+		for y in range(3, 6):
+			for x in range(0, 4):
+				if self.grid[y][x] == self.turn and self.grid[y - 1][x + 1] == self.turn and self.grid[y - 2][x + 2] == self.turn and self.grid[y - 3][x + 3] == self.turn:
+					self.win_condition = self.turn
+
+		# Check tie
+		for x in range(0, 7):
+			if self.grid[0][x] == 0:
+				return
+		if self.win_condition == 0:
+			self.win_condition = 3
+
 	def render(self, screen):
 		screen.fill((40, 20, 0))
 		self.back_button.draw(screen)
+
+		if self.win_condition == 1:
+			screen.blit(self.yellow_win, (168, 32))
+			screen.blit(self.yellow_big, (302, 154))
+			return
+		elif self.win_condition == 2:
+			screen.blit(self.red_win, (168, 32))
+			screen.blit(self.red_big, (302, 154))
+			return
+		elif self.win_condition == 3:
+			screen.blit(self.tie, (168, 32))
+			screen.blit(self.yellow_big, (544, 154))
+			screen.blit(self.red_big, (60, 154))
+			return
 
 		draw_y = self.grid_start[1]
 		for y in range(0, 6):
@@ -67,10 +121,12 @@ class Game:
 			if self.grid[0][self.mouse_grid_pos[0]] == 0:
 				self.grid[self.get_free_tile(self.mouse_grid_pos[0])][self.mouse_grid_pos[0]] = self.turn
 
-			if self.turn == 1:
-				self.turn = 2
-			else:
-				self.turn = 1
+				self.check_win_condition()
+
+				if self.turn == 1:
+					self.turn = 2
+				else:
+					self.turn = 1
 
 		else:
 			self.back_button.event_handler(event)
